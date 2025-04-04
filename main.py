@@ -22,7 +22,7 @@ app.add_middleware(
 )
 
 # Configure Gemini API
-API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyDVfEfdEHRSA5uc88qxU4WG10liyVvAsg0")
+API_KEY = os.getenv("GOOGLE_API_KEY", "AIzaSyDVfEfdEHRSA5uc88qxU4WG10liyVvAsg0")
 genai.configure(api_key=API_KEY)
 
 class ChatRequest(BaseModel):
@@ -49,6 +49,9 @@ def format_response(response: str) -> str:
     
     # Add proper line breaks for readability
     response = response.replace('. ', '.\n')
+    
+    # Remove any references to future dates
+    response = re.sub(r'\b(2024|2025)\b', '2023', response)
     
     return response.strip()
 

@@ -37,7 +37,8 @@ export default function ChatbotUI() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8000/chat", {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const response = await fetch(`${apiUrl}/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,7 +52,7 @@ export default function ChatbotUI() {
       const data = await response.json();
       
       if (data.status === "success") {
-        setMessages(prev => [...prev, { text: data.response, sender: "bot", isHtml: true }]);
+        setMessages(prev => [...prev, { text: data.response, sender: "bot" }]);
       } else {
         setMessages(prev => [...prev, { text: "Sorry, I encountered an error. Please try again.", sender: "bot" }]);
       }
@@ -152,7 +153,7 @@ export default function ChatbotUI() {
                 </div>
                 <div>
                   <h2 className="font-bold text-lg">YUKTI YANTRA</h2>
-                  <p className="text-xs text-gray-500">AI Assistant</p>
+                  <p className="text-xs text-gray-500">AI Assistant • {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
                 </div>
               </div>
               <div className="flex gap-2">
